@@ -142,39 +142,53 @@ public class Polynomial{
 	public boolean hasRoot(double d){
 		return evaluate(d) == 0;
 	}
+	public int get_length(int[] arr){
+		int count = 0;
+		for (int i = 0; i < arr.length; i++){
+			if (arr[i] != 100){
+				count++;
+			}
+		}
+		return count;
+	}
 	public Polynomial multiply(Polynomial p){
-		Polynomial mult = new Polynomial();
-		double[] c = new double[1];
-		double[] tempC = new double[1];
-		int[] tempE = new int[1];
-		int[] e = new int[1];
+		double[] mult_c = new double[coefficients.length*p.coefficients.length];
+		int[] mult_e = new int[coefficients.length*p.coefficients.length];
 		int m = 0;
 		for (int i = 0; i < coefficients.length; i++){
 			for (int j = 0; j < p.coefficients.length; j++){
-				mult.coefficients[m] = p.coefficients[j] * coefficients[i];
-				mult.exponents[m] = p.exponents[j] + exponents[i];
+				System.out.println("INt: " + m + ", " + j + ", " + i);
+				mult_c[m] = p.coefficients[j] * coefficients[i];
+				mult_e[m] = p.exponents[j] + exponents[i];
 				m++;
 			}
 		}
 		for (int k = 0; k < m; k++){
-			for (int l = k; l < m; l++){
-				if (mult.exponents[k] == mult.exponents[l] && k != l){
-					mult.coefficients[k] += mult.coefficients[l];
-					for (int n = 0; n < m; n++){
-						tempC = new double[c.length-1];
-						tempE = new int[e.length-1];
-						if(n != l){
-							tempC[n] = c[n];
-							tempE[n] = e[n];
-						}
-					}
-					c = tempC;
-					e = tempE;
+			for (int l = 0; l < m; l++){
+				if (mult_e[k] == mult_e[l] && k != l){
+					mult_c[k] += mult_c[l];
+					mult_c[l] = 100;
+					mult_e[l] = 100;
 				}
 			}
 		}
-		p.coefficients = c;
-		p.exponents = e;
+		int len = get_length(mult_e);
+		int[] new_e = new int[len];
+		double[] new_c = new double[len];
+		int e = 0;
+		int c = 0;
+		for (int n = 0; n < m; n++){
+			if (e < len && mult_e[n] != 100){
+				new_e[e] = mult_e[n];
+				e++;
+			}
+			if (c < len && mult_c[n] != 100){
+				new_c[c] = mult_c[n];
+				c++;
+			}
+		}
+		p.coefficients = new_c;
+		p.exponents = new_e;
 		return p;
 	}
 	public void saveToFile(String s){

@@ -19,5 +19,13 @@ public class Driver {
 		File file = new File("C:\\Users\\janif\\Desktop\\p.txt");
 		Polynomial p3 = new Polynomial(file);
 		System.out.println("p3(13): " + p3.evaluate(13));
+		double [] co = {1,1};
+		int [] ex = {0,1};
+		double [] co2 = {2,1};
+		int [] ex2 = {0,1};
+		Polynomial p_1 = new Polynomial(co,ex);
+		Polynomial p_2 = new Polynomial(co2,ex2);
+		Polynomial i = p_1.multiply(p_2);
+		System.out.println("i(2.1): " + i.evaluate(2.1));
 	}
 }
